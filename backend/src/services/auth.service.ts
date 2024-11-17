@@ -209,6 +209,7 @@ export const updateSubaccountByID = async (
   parentUsername: any,
   money: number
 ) => {
+<<<<<<< HEAD
   try {
     const parentAccount: any = await db.query(
       `
@@ -254,4 +255,8 @@ export const updateSubaccountByID = async (
     console.log(error);
     return { error: error };
   }
+=======
+  const result = getSubAccountByID(parentUsername, sub_account_id);
+  console.log(result);
+>>>>>>> af9beb5d1d32e2b49bfc4e96f3779341067ab7d6
 };
