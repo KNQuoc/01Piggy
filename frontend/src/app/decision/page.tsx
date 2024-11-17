@@ -9,6 +9,9 @@ const Page = () => {
   const [againstMessage, setAgainstMessage] = useState("Generating advice...");
   const [showDecisionSection, setShowDecisionSection] = useState(false);
 
+  const BACKEND_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+
   const startDecisionProcess = async () => {
     if (requestsInProgress) return;
     setRequestsInProgress(true);
@@ -23,16 +26,20 @@ const Page = () => {
 
     try {
       const [forResponse, againstResponse] = await Promise.allSettled([
-        fetch("/decision/for", {
+        fetch(`${BACKEND_URL}/decision/for`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: "Should I make this purchase?" }), // Backend expects `content`
         }).then(async (res) => {
           if (!res.ok) throw new Error("Failed to fetch for-response");
           return res.json();
         }),
-        fetch("/decision/against", {
+        fetch(`${BACKEND_URL}/decision/against`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: "Should I reconsider this purchase?",
+          }), // Backend expects `content`
         }).then(async (res) => {
           if (!res.ok) throw new Error("Failed to fetch against-response");
           return res.json();
@@ -50,6 +57,7 @@ const Page = () => {
         console.error("For response error:", forResponse.reason);
       }
 
+      // Process the "against" response
       if (
         againstResponse.status === "fulfilled" &&
         againstResponse.value?.message

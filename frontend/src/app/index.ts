@@ -55,7 +55,10 @@ Bun.serve({
     }
 
     if (url.pathname === "/") {
-      return new Response(Bun.file("./index.html"));
+      return new Response(
+        JSON.stringify({ message: "Server is running." }),
+        { headers: { "Content-Type": "application/json" } }
+      );
     }
 
     // Handle the "for purchase" perspective
