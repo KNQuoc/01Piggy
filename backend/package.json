@@ -1,11 +1,19 @@
 {
   "name": "backend",
-  "module": "index.ts",
-  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.2.13",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "csv": "^6.3.10",
+    "hono": "^4.6.10",
+    "pg-lite": "^0.0.1",
+    "pinata": "^1.8.1",
+    "uuid": "^11.0.3"
+  },
   "devDependencies": {
     "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
   }
 }
