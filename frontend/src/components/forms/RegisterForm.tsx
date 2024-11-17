@@ -20,8 +20,17 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const res = await fetch("http://localhost:3000/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data);
     // Handle registration logic here
     console.log("Registration submitted", {
       username,
@@ -38,7 +47,7 @@ export default function RegisterForm() {
         <CardDescription>Create a new account to get started</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" method="POST">
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <Input
@@ -82,24 +91,23 @@ export default function RegisterForm() {
               required
             />
           </div>
+          <CardFooter>
+            <div className="flex flex-col"></div>
+            <Button type="submit" className="w-full">
+              Register
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/sign-in" className="text-blue-500">
+                Login
+              </Link>
+            </p>
+          </CardFooter>
         </form>
       </CardContent>
       {/* <div className="flex items-center justify-center mt-8 ">
           <Loader2 className="animate-spin text-muted-foreground" />
         </div> */}
-
-      <CardFooter>
-        <div className="flex flex-col"></div>
-        <Button type="submit" className="w-full">
-          Register
-        </Button>
-        <p className="text-center text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link href="/sign-in" className="text-blue-500">
-            Login
-          </Link>
-        </p>
-      </CardFooter>
     </Card>
   );
 }
