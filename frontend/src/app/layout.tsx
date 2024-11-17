@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import NavBar from "@/components/common/NavBar";
 
 export const metadata: Metadata = {
-  title: "Positivus",
-  description: "You goto place for anything digital",
+  title: "01Piggy",
+  description: "Teach your kids money management",
 };
 
 const spaceGrotesk = Space_Grotesk({
@@ -19,10 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={spaceGrotesk.className}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={spaceGrotesk.className}>
+        <NavBar />
+        {children}
+      </body>
+    </html>
   );
 }

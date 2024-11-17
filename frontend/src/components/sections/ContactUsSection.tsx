@@ -10,11 +10,11 @@ function ContactUsSection() {
     <section className="bg-accent flex justify-between w-full rounded-[45px] relative overflow-x-hidden">
       <div className="py-[60px] px-8 md:px-[100px] xl:pr-[500px]">
         <div className="flex flex-col md:flex-row gap-8 md:gap-[40px] items-center ">
-          <div className="px-2 bg-primary inline-block font-medium text-h2 rounded-md">
+          <div className="px-2 bg-accent inline-block font-medium text-h2 rounded-md">
             Contact Us
           </div>
           <p className="text-p">
-            Connect with Us: Let's Discuss Your Digital Marketing Needs
+            Send us a message and we will get back to you as soon as possible.
           </p>
         </div>
 
@@ -51,7 +51,7 @@ function ContactUsSection() {
         <div className="mt-[40px]">
           <MainButton
             text="Send Message"
-            classes="bg-secondary text-white text-[18px] w-full md:w-full hover:text-black"
+            classes="bg-primary text-white text-[18px] w-full md:w-full hover:text-green-500"
           />
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import MainButton from "./MainButton";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -57,12 +57,7 @@ function NavBar() {
             ))}
 
             <div className="flex items-center gap-[40px] select-none">
-              <SignedOut>
-                <MainButton text="Sign In" action={signIn} />
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
+              <MainButton text="Sign In" action={signIn} />
             </div>
           </div>
         </div>
@@ -75,7 +70,7 @@ function NavBar() {
       >
         <div className="flex justify-between mx-[10px]">
           <div className="flex gap-[50px] text-[16px] items-center select-none">
-            <img src="/images/logo.png" alt="logo" className="w-[7rem]" />
+            <Image src="/images/logo.svg" width={120} height={120} alt="logo" />
           </div>
           <div className="flex items-center gap-[40px]">
             {menu ? (

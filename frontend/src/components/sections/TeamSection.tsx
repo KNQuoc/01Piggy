@@ -49,13 +49,6 @@ function TeamSection() {
           <TeamCard {...team} key={index} />
         ))}
       </div>
-
-      <div className="mt-[40px] flex justify-end">
-        <MainButton
-          text="See all team"
-          classes="bg-secondary text-white text-[18px] w-full md:w-[231px] hover:text-black"
-        />
-      </div>
     </section>
   );
 }
