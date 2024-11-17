@@ -209,6 +209,49 @@ export const updateSubaccountByID = async (
   parentUsername: any,
   money: number
 ) => {
-  const result = getSubAccountByID(parentUsername, sub_account_id);
-  console.log(result);
+  try {
+    const parentAccount: any = await db.query(
+      `
+      SELECT * FROM account WHERE $username = $1
+      `,
+      [parentUsername]
+    );
+
+    if (parentAccount.rows.length === 0) {
+      throw new Error("Parent account not found");
+    }
+
+    const parentAccountId = parentAccount.rows[0].account_id;
+
+    const subAccount = await db.query(
+      `SELECT * FROM sub_account WHERE sub_account_id = $1 AND account_id = $2`,
+      [sub_account_id, parentAccountId]
+    );
+
+    if (subAccount.rows.length === 0) {
+      throw new Error("Subaccount not associated with the parent account");
+    }
+
+    // Step 3: Update the subaccount's money field
+    const updateResult = await db.query(
+      `UPDATE sub_account 
+       SET money = $1 
+       WHERE sub_account_id = $2 
+       RETURNING *`,
+      [money, sub_account_id]
+    );
+
+    if (updateResult.rows.length === 0) {
+      throw new Error("Failed to update subaccount");
+    }
+
+    console.log("Updated Subaccount:", updateResult.rows[0]);
+
+    return {
+      result: updateResult.rows[0],
+    };
+  } catch (error) {
+    console.log(error);
+    return { error: error };
+  }
 };
