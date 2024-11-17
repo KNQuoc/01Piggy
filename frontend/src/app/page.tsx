@@ -32,12 +32,13 @@ export default function Home() {
           </button>
         </Link>
         <HeroSection />
-        <LogoGroupSection />
+        {/*<LogoGroupSection />*/}
         <ServiceSection />
+        {/*
         <LetMakeThingsHappenSection />
         <OurWorkingProcessSection />
         <TeamSection />
-        <ContactUsSection />
+        <ContactUsSection />*/}
         <FooterSection />
       </div>
     </main>
