@@ -99,7 +99,7 @@ const Page = () => {
                         </div>
                     </div>
 
-                    <div id="decision-section" className={showDecisionSection ? '' : 'hidden'} mt-8 text-center space-x-4>
+                    <div className="mt-8 text-center flex space-x-4" id="decision-section" className={showDecisionSection ? '' : 'hidden'}>
                         <button
                             onClick={() => makeDecision('no')}
                             className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg transition-colors"
