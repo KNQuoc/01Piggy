@@ -47,6 +47,17 @@ Your role is to provide short, concise, positive, discouraging reasons to make t
 Present your response in a clear, structured format with bullet points. Make it under 50 words total.
 Keep the tone positive and emotion-based.`;
 
+const FINANCIAL_SYSTEM_MESSAGE = `You are a helpful financial advisor designed to teach children about financial literacy. Your goal is to:
+- Use simple language appropriate for children
+  - Explain financial concepts through relatable examples
+  - Encourage good money habits
+  - Be positive and encouraging
+  - Use emoji occasionally to keep engagement
+  - Break down complex topics into simple steps
+  - Avoid technical financial jargon
+
+Start by asking about the user's day, with basic greetings and such. Keep it short, generally under 100 words.`;
+
 // Database initialization
 let db: PGlite;
 
@@ -162,6 +173,64 @@ app.get("/auth", (c) => {
 // Add a health check endpoint
 app.get("/health", (c) => {
   return c.json({ status: "OK", uptime: process.uptime() });
+});
+
+// Add a chat endpoint
+app.post("/chat/financial", async (c) => {
+  try {
+    const body = await c.req.json();
+    if (!body || !body.message) {
+      return c.json({ error: "Invalid input. 'message' is required." }, 400);
+    }
+
+    // Construct messages without using specific types
+    const openAiMessages = [
+      { role: "system", content: FINANCIAL_SYSTEM_MESSAGE },
+      ...(body.messages || []), // Add conversation history if provided
+      { role: "user", content: body.message },
+    ];
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: openAiMessages,
+      temperature: 0.7,
+      max_tokens: 300,
+    });
+
+    return c.json({
+      message: completion.choices[0].message.content,
+    });
+  } catch (error) {
+    console.error("Chat error:", error);
+    return c.json({ error: "Error generating chat response" }, 500);
+  }
+});
+
+app.post("/chat/initial", async (c) => {
+  try {
+    const body = await c.req.json();
+    if (!body || !body.message) {
+      return c.json({ error: "Invalid input. 'message' is required." }, 400);
+    }
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        { role: "system", content: FINANCIAL_SYSTEM_MESSAGE },
+        { role: "user", content: body.message },
+      ],
+      temperature: 0.7,
+      max_tokens: 300,
+    });
+
+    return c.json({
+      message: completion.choices[0].message.content,
+      messagesCid: "some-unique-id", // Optional: Generate a real CID if needed
+    });
+  } catch (error) {
+    console.error("Initial chat error:", error);
+    return c.json({ error: "Error generating initial response" }, 500);
+  }
 });
 
 // Start Bun server and mount Hono app
