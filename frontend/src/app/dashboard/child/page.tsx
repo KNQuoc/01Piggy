@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import BalanceOverview from "@/components/child/BalanceOverview";
 import TransactionRequests from "@/components/child/TransactionRequest";
 import TransactionHistory from "@/components/child/TransactionHistory";
+import { MarketplacePreview } from "@/components/marketplace/MarketPreview";
 
 export default function ChildDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -26,8 +27,7 @@ export default function ChildDashboard() {
       <Tabs
         defaultValue="overview"
         className="w-full"
-        onValueChange={setActiveTab}
-      >
+        onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Balance</TabsTrigger>
           <TabsTrigger value="request">Request</TabsTrigger>
@@ -44,6 +44,7 @@ export default function ChildDashboard() {
           </TabsContent>
           <TabsContent value="request">
             <TransactionRequests />
+            <MarketplacePreview />
           </TabsContent>
           <TabsContent value="history">
             <TransactionHistory />

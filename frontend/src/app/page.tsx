@@ -13,24 +13,6 @@ export default function Home() {
   return (
     <main>
       <div className="mx-4 md:mx-[100px] pt-[70px] flex flex-col gap-[140px]">
-      <Link href="/decision">
-          <button
-            style={{
-              position: "absolute",
-              top: "150px",
-              left: "20%",
-              padding: "10px",
-              width: "300px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            Decision
-          </button>
-        </Link>
         <HeroSection />
         {/*<LogoGroupSection />*/}
         <ServiceSection />
