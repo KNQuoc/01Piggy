@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -65,6 +66,12 @@ export default function LoginForm() {
         <Button type="submit" className="w-full">
           Login
         </Button>
+        <p className="text-center text-sm text-muted-foreground">
+          Don't have an account?{" "}
+          <Link href="/sign-up" className="text-blue-500">
+            Register
+          </Link>
+        </p>
       </CardFooter>
     </Card>
   );

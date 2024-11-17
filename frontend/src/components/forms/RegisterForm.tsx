@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -88,9 +89,16 @@ export default function RegisterForm() {
         </div> */}
 
       <CardFooter>
+        <div className="flex flex-col"></div>
         <Button type="submit" className="w-full">
           Register
         </Button>
+        <p className="text-center text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="text-blue-500">
+            Login
+          </Link>
+        </p>
       </CardFooter>
     </Card>
   );

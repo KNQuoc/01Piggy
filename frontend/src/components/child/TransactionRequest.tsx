@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import AIDecisionMakerPopover from "../decision/DecisionMaker";
+import { MarketplacePreview } from "../marketplace/MarketPreview";
 
 interface ProductInfo {
   name: string;
@@ -18,6 +20,7 @@ export default function TransactionRequests() {
   const [productInfo, setProductInfo] = useState<ProductInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
@@ -57,79 +60,101 @@ export default function TransactionRequests() {
   };
 
   const handleRequestSubmit = async () => {
+    // setIsLoading(true);
+    setOpen(true);
+    // // Simulating API call to submit the request
+    // await new Promise((resolve) => setTimeout(resolve, 1500));
+    // setIsLoading(false);
+    // alert("Transaction request submitted successfully!");
+    // setUrl("");
+    // setProductInfo(null);
+  };
+  const handlePurchase = () => {
+    setOpen(false);
     setIsLoading(true);
     // Simulating API call to submit the request
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    alert("Transaction request submitted successfully!");
-    setUrl("");
-    setProductInfo(null);
+    setTimeout(() => {
+      setIsLoading(false);
+      alert("Transaction request submitted successfully!");
+      setUrl("");
+      setProductInfo(null);
+    }, 1500);
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Request a Transaction</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="productUrl">Product URL</Label>
-            <Input
-              id="productUrl"
-              type="url"
-              placeholder="https://example.com/product"
-              value={url}
-              onChange={handleUrlChange}
-              required
-            />
-          </div>
-          {error && (
-            <Alert variant="destructive">
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              "Fetch Product Info"
-            )}
-          </Button>
-        </form>
-
-        {productInfo && (
-          <div className="mt-6 space-y-4">
-            <div className="flex items-center space-x-4">
-              <Image
-                src={productInfo.image}
-                alt={productInfo.name}
-                width={64}
-                height={64}
-                className="rounded-md"
+    <>
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle>Request a Transaction</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="productUrl">Product URL</Label>
+              <Input
+                id="productUrl"
+                type="url"
+                placeholder="https://example.com/product"
+                value={url}
+                onChange={handleUrlChange}
+                required
               />
-              <div>
-                <h3 className="font-semibold">{productInfo.name}</h3>
-                <p className="text-muted-foreground">
-                  ${productInfo.price.toFixed(2)}
-                </p>
-              </div>
             </div>
-            <Button
-              onClick={handleRequestSubmit}
-              className="w-full"
-              disabled={isLoading}
-            >
+            {error && (
+              <Alert variant="destructive">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Submit Request"
+                "Fetch Product Info"
               )}
             </Button>
+          </form>
+
+          {productInfo && (
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center space-x-4">
+                <Image
+                  src={productInfo.image}
+                  alt={productInfo.name}
+                  width={64}
+                  height={64}
+                  className="rounded-md"
+                />
+                <div>
+                  <h3 className="font-semibold">{productInfo.name}</h3>
+                  <p className="text-muted-foreground">
+                    ${productInfo.price.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={handleRequestSubmit}
+                className="w-full"
+                disabled={isLoading}>
+                {isLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Proceed with Request"
+                )}
+              </Button>
+            </div>
+          )}
+          <div className="flex items-center justify-center">
+            <AIDecisionMakerPopover
+              open={open}
+              onClose={() => {
+                setOpen(false);
+              }}
+              purchase={handlePurchase}
+            />
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </>
   );
 }
