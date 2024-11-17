@@ -11,6 +11,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]); // Start with an empty array
   const [userInput, setUserInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [listening, setListening] = useState<boolean>(false);
   const [messagesCid, setMessagesCid] = useState<string | null>(null);
 
   const BACKEND_URL =
@@ -37,11 +38,9 @@ export default function ChatPage() {
       if (!response.ok) throw new Error("Failed to fetch initial message");
 
       const data = await response.json();
-      setMessages((prev) => [
-        ...prev,
-        { sender: "Advisor", message: data.message },
-      ]);
+      addMessage("Advisor", data.message);
       setMessagesCid(data.messagesCid);
+      textToSpeech(data.message);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -59,10 +58,10 @@ export default function ChatPage() {
     ]);
   };
 
-  const handleUserInput = async () => {
-    if (!userInput.trim()) return;
+  const handleUserInput = async (text?: string) => {
+    const message = text || userInput.trim();
+    if (!message) return;
 
-    const message = userInput.trim();
     addMessage("You", message);
     setUserInput("");
     setLoading(true);
@@ -86,11 +85,50 @@ export default function ChatPage() {
 
       const data = await response.json();
       addMessage("Advisor", data.message);
+      textToSpeech(data.message);
     } catch (error) {
       console.error("Error:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const startListening = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => setListening(false);
+
+    recognition.onresult = (event: any) => {
+      const speechToText = event.results[0][0].transcript;
+      handleUserInput(speechToText);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error:", event.error);
+      setListening(false);
+    };
+
+    recognition.start();
+  };
+
+  const textToSpeech = (text: string) => {
+    if (!("speechSynthesis" in window)) {
+      alert("Text-to-speech is not supported in your browser.");
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    window.speechSynthesis.speak(utterance);
   };
 
   return (
@@ -137,10 +175,18 @@ export default function ChatPage() {
               }}
             />
             <button
-              onClick={handleUserInput}
+              onClick={() => handleUserInput()}
               className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors"
               disabled={loading}>
               Send
+            </button>
+            <button
+              onClick={startListening}
+              className={`bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors ${
+                listening ? "opacity-50" : ""
+              }`}
+              disabled={listening}>
+              {listening ? "Listening..." : "Talk"}
             </button>
           </div>
         </div>

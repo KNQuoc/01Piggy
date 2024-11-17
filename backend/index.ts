@@ -3,7 +3,12 @@ import { cors } from "hono/cors";
 import { PinataSDK } from "pinata";
 import { PGlite } from "@electric-sql/pglite";
 import OpenAI from "openai";
+import * as fs from "fs";
+import * as path from "path";
 import * as dotenv from "dotenv";
+import * as FormData from "form-data";
+import { Readable } from "stream";
+import Gtts from "gtts";
 
 // Load environment variables
 dotenv.config();
@@ -232,6 +237,63 @@ app.post("/chat/initial", async (c) => {
     return c.json({ error: "Error generating initial response" }, 500);
   }
 });
+
+app.post("/chat/speech-to-text", async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get("audio") as File;
+
+    if (!file) {
+      return c.json({ error: "Audio file is required" }, 400);
+    }
+
+    // Convert to compatible FormData object
+    const audioBuffer = Buffer.from(await file.arrayBuffer());
+    const form = new FormData();
+    form.append("file", audioBuffer, { filename: "audio.mp3" });
+
+    const transcription = await openai.audio.transcriptions.create({
+      file: form.getBuffer(),
+      model: "whisper-1",
+    });
+
+    return c.json({ text: transcription.text });
+  } catch (error) {
+    console.error("Speech-to-Text Error:", error);
+    return c.json({ error: "Error processing audio" }, 500);
+  }
+});
+
+// Text-to-Speech Endpoint
+app.post("/chat/text-to-speech", async (c) => {
+  try {
+    const body = await c.req.json();
+    const text = body.text;
+
+    if (!text) {
+      return c.json({ error: "Text input is required" }, 400);
+    }
+
+    const gtts = new Gtts(text, "en");
+    const outputPath = path.resolve("./output.mp3");
+
+    await new Promise<void>((resolve, reject) => {
+      gtts.save(outputPath, (err: Error | undefined) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    const audioBuffer = fs.readFileSync(outputPath);
+    return new Response(audioBuffer, {
+      headers: { "Content-Type": "audio/mpeg" },
+    });
+  } catch (error) {
+    console.error("Text-to-Speech Error:", error);
+    return c.json({ error: "Error generating speech" }, 500);
+  }
+});
+
 
 // Start Bun server and mount Hono app
 Bun.serve({
