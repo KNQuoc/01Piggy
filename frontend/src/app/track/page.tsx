@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { Chart } from "react-google-charts";
-import AnimatePNG from "./animatePNG";
+import AnimatePNG from "../pages/animatePNG";
 
-const track = () => {
+export default function Page() {
   const spending = [
     ["Category", "Dollars"],
     ["Roblox", 50],
@@ -151,6 +152,4 @@ const track = () => {
       </main>
     </div>
   );
-};
-
-export default track;
+}

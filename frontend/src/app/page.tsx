@@ -163,7 +163,7 @@ export default function Page() {
           </button>
         </Link>
 
-        <Link href="/decision.tsx" className="text-blue-500 hover:underline">
+        <Link href="/decision" className="text-blue-500 hover:underline">
           Go to Purchase Decision Assistant
         </Link>
       </main>

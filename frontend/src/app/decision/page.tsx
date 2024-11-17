@@ -1,8 +1,9 @@
+"use client";
 import { useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 
-const decision = () => {
+const Page = () => {
     const [requestsInProgress, setRequestsInProgress] = useState(false);
     const [forMessage, setForMessage] = useState('Generating advice...');
     const [againstMessage, setAgainstMessage] = useState('Generating advice...');
@@ -118,4 +119,4 @@ const decision = () => {
     );
 };
 
-export default decision;
+export default Page;
