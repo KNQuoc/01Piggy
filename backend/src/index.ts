@@ -3,13 +3,15 @@ import authRoute from "./routes/auth.routes";
 import { PinataSDK } from "pinata";
 import { PGlite } from "@electric-sql/pglite";
 import orderRoute from "./routes/order.routes";
+import { cors } from "hono/cors";
 
 const app = new Hono();
+
+app.use("*", cors());
 
 const PINATA_JWT = process.env.PINATA_JWT;
 const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_GATEWAY = process.env.PINATA_GATEWAY;
-const PINATA_GROUP_ID = process.env.PINATA_GROUP_ID;
 
 let db: PGlite;
 
@@ -22,7 +24,7 @@ async function initDB(): Promise<string> {
   try {
     const files = await pinata.files
       .list()
-      .group("01933b10-f930-7870-9abb-8ee191884173")
+      .group("01933b2a-dba8-7282-854c-138c8c142f1a")
       .order("DESC");
 
     let groupId = null;
@@ -79,7 +81,7 @@ async function initDB(): Promise<string> {
       const file = (await db.dumpDataDir("gzip")) as File;
       const upload = await pinata.upload
         .file(file)
-        .group("01933b10-f930-7870-9abb-8ee191884173")
+        .group("01933b2a-dba8-7282-854c-138c8c142f1a")
         .addMetadata({ name: "piggy" });
 
       return "New db created";

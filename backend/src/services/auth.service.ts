@@ -51,10 +51,14 @@ export const signup = async (username: string, password: string) => {
       `INSERT INTO account (username, password) VALUES ($1, $2);`,
       [username, hashedPassword]
     );
-    const result = await db.query(`SELECT * FROM account;`);
+    const result: any = await db.query(`SELECT * FROM account;`);
 
     console.log(result.rows);
-    return result.rows;
+    return {
+      username: result.rows[0].username,
+      balance: result.rows[0].balance,
+    };
+    
   } catch (error) {
     console.log("Sign up", error);
   }
