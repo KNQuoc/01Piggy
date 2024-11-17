@@ -14,12 +14,13 @@ export default function Home() {
     <main>
       <div className="mx-4 md:mx-[100px] pt-[70px] flex flex-col gap-[140px]">
         <HeroSection />
-        <LogoGroupSection />
+        {/*<LogoGroupSection />*/}
         <ServiceSection />
+        {/*
         <LetMakeThingsHappenSection />
         <OurWorkingProcessSection />
         <TeamSection />
-        <ContactUsSection />
+        <ContactUsSection />*/}
         <FooterSection />
       </div>
     </main>

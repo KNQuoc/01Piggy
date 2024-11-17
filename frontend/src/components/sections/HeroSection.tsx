@@ -1,5 +1,6 @@
 import React from "react";
 import MainButton from "../common/MainButton";
+import Image from "next/image";
 
 function HeroSection() {
   return (
@@ -9,12 +10,6 @@ function HeroSection() {
           The Future <br /> of Financial Literacy <br />
           for Kids!
         </p>
-        <div className="block  md:hidden my-[35px]">
-          <img
-            src="/images/microphone_illustration.png"
-            alt="microphone illustration"
-          />
-        </div>
 
         <p className="text-p text-black my-[35px]">
           Empower your children to save,spend and learn responsibly with our fun
@@ -26,10 +21,12 @@ function HeroSection() {
           classes="bg-primary text-white text-[18px] w-full md:w-[231px] hover:text-green-500"
         />
       </div>
-      <div className="hidden md:block">
-        <img
-          src="/images/microphone_illustration.png"
-          alt="microphone illustration"
+      <div className="h-full hidden lg:flex flex-col items-center justify-start pt-8">
+        <Image
+          src={"/images/company-logo.svg"}
+          height={300}
+          width={300}
+          alt="Logo"
         />
       </div>
     </section>
