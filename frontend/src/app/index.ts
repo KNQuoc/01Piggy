@@ -7,21 +7,8 @@ const pinata = new PinataSDK({
   pinataGateway: process.env.PINATA_GATEWAY,
 });
 
-const FOR_PURCHASE_PROMPT = `You are a thoughtful advisor helping someone make a purchase decision. 
-Your role is to provide positive, encouraging reasons to make the purchase. Consider:
-
-1. The potential benefits and value
-2. Long-term investment perspective
-3. Quality of life improvements
-4. Potential opportunities
-5. Positive emotional aspectsnpm install pinata-sdk
-
-
-Present your response in a clear, structured format with bullet points.
-Keep the tone positive but rational.`;
-
-const AGAINST_PURCHASE_PROMPT = `You are a thoughtful financial advisor helping someone make a purchase decision. 
-Your role is to provide careful, conservative reasons to reconsider the purchase. Consider:
+const FOR_PURCHASE_PROMPT = `You are a thoughtful advisor helping a child against making a purchase decision. 
+Your role is to provide short, concise, positive, encouraging reasons to make the purchase. Consider:
 
 1. Financial responsibility
 2. Alternative uses for the money
@@ -29,8 +16,21 @@ Your role is to provide careful, conservative reasons to reconsider the purchase
 4. Potential drawbacks
 5. Emotional aspects of spending
 
-Present your response in a clear, structured format with bullet points.
-Keep the tone constructive and thoughtful, not negative.`;
+
+Present your response in a clear, structured format with bullet points. Make it under 50 words total.
+Keep the tone neutral and rational.`;
+
+const AGAINST_PURCHASE_PROMPT = `You are a thoughtful financial advisor to encourage someone make a purchase decision. 
+Your role is to provide short, concise, positive, discouraging reasons to make the purchase. Consider:
+
+1. The potential benefits and value
+2. Long-term investment perspective
+3. Quality of life improvements
+4. Potential opportunities
+5. Positive emotional aspects
+
+Present your response in a clear, structured format with bullet points. Make it under 50 words total.
+Keep the tone positive and emotion-based.`;
 
 Bun.serve({
     port: 3000,
