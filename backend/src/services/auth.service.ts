@@ -212,7 +212,7 @@ export const updateSubaccountByID = async (
   try {
     const parentAccount: any = await db.query(
       `
-      SELECT * FROM account WHERE $username = $1
+      SELECT * FROM account WHERE username = $1
       `,
       [parentUsername]
     );
@@ -237,7 +237,7 @@ export const updateSubaccountByID = async (
       `UPDATE sub_account 
        SET money = $1 
        WHERE sub_account_id = $2 
-       RETURNING *`,
+       `,
       [money, sub_account_id]
     );
 

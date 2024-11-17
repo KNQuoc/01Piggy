@@ -10,10 +10,6 @@ import {
   verifyToken,
 } from "../services/auth.service";
 
-const PINATA_JWT = process.env.PINATA_JWT;
-const PINATA_API_KEY = process.env.PINATA_API_KEY;
-const PINATA_GATEWAY = process.env.PINATA_GATEWAY;
-
 const authRoute = new Hono();
 
 authRoute.post("/login", async (c: any) => {

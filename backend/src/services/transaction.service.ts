@@ -1,1 +1,3 @@
-export const getAllTransactions = async () => {};
+export const getAllTransactions = async () => {
+    
+};
